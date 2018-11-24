@@ -11,7 +11,9 @@ ENV FLASK_INSTANCE_PATH=/data
 COPY requirements.txt ./
 RUN mod_wsgi-docker-build
 
-COPY secretsanta.wsgi *.py static/ templates/ ./
+COPY static/ ./static/
+COPY templates/ ./templates/
+COPY secretsanta.wsgi *.py ./
 
 ENTRYPOINT ["mod_wsgi-docker-start"]
 CMD ["secretsanta.wsgi", "--access-log"]
