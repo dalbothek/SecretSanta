@@ -1,0 +1,86 @@
+persons:
+  maria:
+    first_name: Maria
+    last_name: Marti
+    email: maria.marti@ceilingcat.ch
+    gender: f
+  res:
+    first_name: Res
+    last_name: Marti
+    email: res.marti@ceilingcat.ch
+    gender: m
+  ursi:
+    first_name: Ursi
+    last_name: Kellenberger
+    email: ursi.kellenberger@ceilingcat.ch
+    gender: f
+  stephan:
+    first_name: Stephan
+    last_name: Kellenberger
+    email: stephan.kellenberger@ceilingcat.ch
+    gender: m
+  luzia:
+    first_name: Luzia
+    last_name: Kellenberger
+    email: luzia.kellenberger@ceilingcat.ch
+    gender: f
+  andi:
+    first_name: André
+    last_name: Gall
+    email: andre.gall@ceilingcat.ch
+    gender: m
+  christa:
+    first_name: Christa
+    last_name: Kellenberger
+    email: christa.kellenberger@ceilingcat.ch
+    gender: f
+  otto:
+    first_name: Otto
+    last_name: Kellenberger
+    email: kellenberger-hasler@ceilingcat.ch
+    gender: m
+
+exclusions:
+  - [maria, res]
+  - [ursi, stephan]
+  - [luzia, andi]
+
+settings:
+  draw:
+    min_circle_size: 4
+    avoid_previous_partners: 1
+
+  email:
+    sender: Simon Marti
+    receiver: |
+      {{ first_name }} {{ last_name }} <{{ email }}>
+    subject: Weihnachtsgeschenke
+    message: |
+      Liebe{% if gender == 'm' %}r{% endif %} {{ first_name }}
+
+      Der Wichtel hat dieses Jahr leider etwas länger gebraucht um sich zu entscheiden, nun stehen aber alle Geschenkspartner fest.
+      Hier findest du raus wen du beschenken darfst: {{ url }}
+
+      Liebe Grüsse
+      Simon
+
+  site:
+    title: Weihnachtsgeschenke
+    text_above: |
+      Folgende Person darfst du deises Jahr beschenken:
+    text_below: |
+      Frohe Weihnachten!
+    signature: "- Der Wichtel"
+    secret1: |
+      {{ first_name }}
+    secret2: |
+      {{ last_name }}
+
+history:
+  2017-11-01:
+    maria: christa
+    res: ursi
+    ursi: maria
+    stephan: otto
+    christa: stephan
+    otto: res

@@ -1,0 +1,41 @@
+<html>
+<head>
+    <title>{{ secret.title }}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Special+Elite|Cinzel+Decorative:400,700">
+</head>
+<body>
+<div id="center-outer">
+    <div id="center-inner">
+        <div id="all">
+            <div id="background">
+                <div id="bg-top"></div>
+                <div id="bg-middle"></div>
+                <div id="bg-bottom"></div>
+            </div>
+            <h1>{{ secret.title }}</h1>
+            {% for p in secret.text_above.split('\n\n') %}
+                <p>{{ p }}</p>
+            {% endfor %}
+            <div class="slot-machine" id="row1"></div>
+            <div class="slot-machine" id="row2"></div>
+            <div id="footer">
+                {% for p in secret.text_below.split('\n\n') %}
+                <p>{{ p }}</p>
+                {% endfor %}
+                <span>{{ secret.signature }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+<footer>
+    Icons made by <a href="https://icon54.com/" title="Pixel perfect">Pixel perfect</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
+</footer>
+<script src="/static/js/jquery.js"></script>
+<script>
+    var secret1 = "{{ secret.secret1 }}";
+    var secret2 = "{{ secret.secret2 }}";
+</script>
+<script src="/static/js/script.js"></script>
+</body>
+</html>
