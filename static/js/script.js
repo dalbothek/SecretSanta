@@ -78,7 +78,7 @@ function animate(el, start, end) {
 }
 
 function topOffset(index) {
-    return -(index + OVERLAP) * 49 + 30;
+    return -(index + OVERLAP) * 49 + 17;
 }
 
 function buildRow(el, target, length) {
@@ -90,18 +90,42 @@ function buildRow(el, target, length) {
         left: 500 - length * 25
     });
 
+    var colors = [
+        "color1",
+        "color2",
+        "color3",
+        "color4"
+    ];
+
     for (var i = 0; i < length; i++) {
         var slot = $("<div class='slot'>");
         el.append(slot);
         var band = $("<div class='band'>");
         slot.append(band);
 
+        var color_cache = {};
         var slots = shuffle(CHARS.concat(shuffle(ICONS).slice(0, ICON_COUNT)));
         for (var j = -OVERLAP; j < SLOT_COUNT + OVERLAP; j++) {
             var cell = $("<span>");
             var char = slots[(j + SLOT_COUNT) % SLOT_COUNT];
             if (char.length === 1) {
                 cell.text(char);
+                if (color_cache[char] != undefined) {
+                    if (color_cache[char] != null) {
+                        cell.addClass(color_cache[char]);
+                    }
+                }
+                else {
+                    var color;
+                    if (Math.random() > 0.5) {
+                        color = shuffle(colors)[0];
+                        cell.addClass(color);
+                    }
+                    else {
+                        color = null;
+                    }
+                    color_cache[char] = color;
+                }
             }
             else {
                 var img = $("<img src='/static/img/icon/" + char + "'>");

@@ -426,13 +426,24 @@ th {
 
 
 /*************************************
+ Colors
+ *************************************/
+/* gray: #585353 */
+/* red: #D34C3C */
+/* orange: #D7A37D */
+/* beige: #E7D1BF */
+/* green: #9EB69C */
+
+
+/*************************************
  Style
  *************************************/
 
 body {
   background: white;
   text-align: center;
-  font-family: 'Special Elite', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #222;
+  font-family: 'Dancing Script', cursive;
   background: url(/static/img/bg.jpg);
 }
 
@@ -482,23 +493,23 @@ body {
     }
 
 h1 {
-  margin: 80px 0 50px;
-  font-size: 48px;
+  margin: 58px 0 37px;
+  font-size: 65px;
 }
 
 p {
-  font-size: 18px;
+  font-size: 25px;
   width: 550px;
   margin: 30px auto;
 }
 
-footer, #footer {
-  margin-top: 290px;
+#footer {
+  margin-top: 306px;
 }
 
-footer span, #footer span {
+#footer span {
   text-align: right;
-  font-size: 18px;
+  font-size: 25px;
   margin: 100px 40px;
   display: block;
 }
@@ -532,6 +543,7 @@ footer span, #footer span {
   position: relative;
   width: 50px;
   background: url(/static/img/white.jpg);
+  font-family: 'Mountains of Christmas', cursive;
 }
 
 .band span {
@@ -544,9 +556,25 @@ footer span, #footer span {
 }
 
 .band img {
-  display: block;
+  display: inline-block;
   width: 40px;
-  margin: 0 auto;
+  margin: 10px auto 0;
+}
+
+.band .color1 {
+  color: #D34C3C;
+}
+
+.band .color2 {
+  color: #9EB69C;
+}
+
+.band .color3 {
+  color: #D7A37D;
+}
+
+.band .color4 {
+  color: #585353;
 }
 
 footer {
