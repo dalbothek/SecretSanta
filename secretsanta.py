@@ -45,7 +45,7 @@ class Configuration(object):
     def save_with_timestamp(self, path):
         path = pathlib.Path(path)
         name = "%s-%s" % (datetime.date.today().isoformat(), path.name)
-        with open(path.parent / name, "w+") as f:
+        with open(str(path.parent / name), "w+") as f:
             yaml.safe_dump(self.config, f, default_flow_style=False)
 
     def _build_exclusions(self, config):
