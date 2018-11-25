@@ -1,6 +1,8 @@
 import sys
-import argparse
 import random
+import argparse
+import datetime
+import pathlib
 
 import yaml
 
@@ -24,19 +26,29 @@ def read_config(config_file):
 
 class Configuration(object):
     def __init__(self, config):
+        self.config = config
         self.person_info = config['persons']
         self.persons = set(self.person_info.keys())
         self.settings = config['settings']
-        self.draw_settings = self.settings.get('draw', {})
-        self.email_settings = self.settings.get('email', {})
-        self.site_settings = self.settings.get('site', {})
-        self.history = config['history']
-        self.exclusions = self.build_exclusions(config)
+        self.draw_settings = self.settings.setdefault('draw', {})
+        self.email_settings = self.settings.setdefault('email', {})
+        self.site_settings = self.settings.setdefault('site', {})
+        self.history = config.setdefault('history', {})
+        self.exclusions = self._build_exclusions(config)
 
     def get_person(self, key):
         return self.person_info.get(key)
 
-    def build_exclusions(self, config):
+    def append_to_history(self, partners):
+        self.history[datetime.date.today()] = partners
+
+    def save_with_timestamp(self, path):
+        path = pathlib.Path(path)
+        name = "%s-%s" % (datetime.date.today().isoformat(), path.name)
+        with open(path.parent / name, "w+") as f:
+            yaml.safe_dump(self.config, f, default_flow_style=False)
+
+    def _build_exclusions(self, config):
         exclusions = set()
 
         for exclusion in config.get('exclusions', ()):

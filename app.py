@@ -21,11 +21,19 @@ def home():
 
 
 @app.route("/<secret_id>")
-def draw(secret_id):
+def show_secret(secret_id):
     secret = model.Secret.query.get(secret_id)
 
     if secret is None:
         return flask.abort(404)
+
+    model.db.session.add(model.AuditLog.create(
+        "DRAW",
+        {
+            'secret': secret.id
+        }
+    ))
+    model.db.session.commit()
 
     return flask.render_template("draw.html", secret=secret)
 
@@ -71,10 +79,36 @@ def draw(config_file):
         print("Aborted.")
         return
 
+    model.db.session.add(model.AuditLog.create(
+        "CONFIG",
+        config.config
+    ))
+
+    for giver, giver_info, secret in secrets:
+        model.db.session.add(model.AuditLog.create(
+            "ASSIGN",
+            {
+                'giver': giver,
+                'receiver': partners.get(giver),
+                'secret': secret.id
+            }
+        ))
+
     model.db.session.commit()
+
+    config.append_to_history(partners)
+    config.save_with_timestamp(config_file.name)
 
     for msg in messages:
         mail.send(msg)
+        model.db.session.add(model.AuditLog.create(
+            "EMAIL",
+            {
+                'recipient': ", ".join(msg.recipients),
+                'message': str(msg)
+            }
+        ))
+        model.db.session.commit()
 
     print("\nDone.")
 
@@ -95,7 +129,7 @@ def create_secret(giver, receiver, config):
 
 
 def create_mail(giver, secret, config):
-    url = flask.url_for("draw", secret_id=secret.id, _external=True)
+    url = flask.url_for("show_secret", secret_id=secret.id, _external=True)
 
     msg = flask_mail.Message()
     msg.subject = render_string(config.get('subject'), giver)
