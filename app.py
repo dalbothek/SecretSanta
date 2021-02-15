@@ -4,7 +4,6 @@ import click
 import flask
 import flask_mail
 
-
 app = flask.Flask(__name__)
 app.config.from_object("config")
 
@@ -119,9 +118,10 @@ def create_secret(giver, receiver, config):
     secret.secret1 = render_string(config.get('secret1'), receiver)
     secret.secret2 = render_string(config['secret2'], receiver)
     secret.text_above = render_string(config.get('text_above'), giver)
-    secret.text_below = render_string(config.get('text_below'), giver)
+    secret.text_below = render_string(config.get('text_below'), receiver)
     secret.title = render_string(config.get('title'), giver)
     secret.signature = render_string(config.get('signature'), giver)
+    secret.theme = config.get('theme', 'christmas')
 
     model.db.session.add(secret)
 

@@ -18,6 +18,7 @@ class Secret(db.Model):
     secret2 = db.Column(db.String(255), nullable=False)
     text_below = db.Column(db.Text, nullable=False)
     signature = db.Column(db.Text)
+    theme = db.Column(db.String(255), nullable=False)
 
     @classmethod
     def create(cls):

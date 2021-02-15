@@ -447,6 +447,11 @@ body {
   background: url(/static/img/bg.jpg);
 }
 
+  body.theme-birthday {
+    background: url(/static/img/bg-birthday.png);
+    background-size: 1000px 1000px
+  }
+
 #center-outer {
     display: table;
     position: absolute;
@@ -507,11 +512,21 @@ p {
   margin-top: 306px;
 }
 
+#text-below p {
+  white-space: pre-line;
+}
+
+.theme-birthday #text-below {
+  opacity: 0;
+}
+
 #footer span {
   text-align: right;
   font-size: 25px;
-  margin: 100px 40px;
   display: block;
+  position: absolute;
+  right: 70px;
+  bottom: 50px;
 }
 
 .slot-machine {
@@ -575,6 +590,22 @@ p {
 
 .band .color4 {
   color: #585353;
+}
+
+.theme-birthday .band .color1 {
+  color: #585353;
+}
+
+.theme-birthday .band .color2 {
+  color: #EB9396;
+}
+
+.theme-birthday .band .color3 {
+  color: #65B49B;
+}
+
+.theme-birthday .band .color4 {
+  color: #F7C580;
 }
 
 footer {

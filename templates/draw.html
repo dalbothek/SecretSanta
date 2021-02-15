@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="/static/css/style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Dancing+Script|Mountains+of+Christmas">
 </head>
-<body>
+<body class="theme-{{ secret.theme }}">
 <div id="center-outer">
     <div id="center-inner">
         <div id="all">
@@ -20,9 +20,11 @@
             <div class="slot-machine" id="row1"></div>
             <div class="slot-machine" id="row2"></div>
             <div id="footer">
-                {% for p in secret.text_below.split('\n\n') %}
-                <p>{{ p }}</p>
-                {% endfor %}
+                <div id="text-below">
+                    {% for p in secret.text_below.split('\n\n') %}
+                    <p>{{ p }}</p>
+                    {% endfor %}
+                </div>
                 <span>{{ secret.signature }}</span>
             </div>
         </div>
@@ -35,6 +37,7 @@
 <script>
     var secret1 = "{{ secret.secret1 }}";
     var secret2 = "{{ secret.secret2 }}";
+    var theme = "{{ secret.theme }}";
 </script>
 <script src="/static/js/script.js"></script>
 </body>

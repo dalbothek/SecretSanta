@@ -1,15 +1,27 @@
 var CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ -".split("");
-var ICONS = [
-    "001-angel.svg",
-    "004-candle.svg",
-    "008-christmas.svg",
-    "010-star.svg",
-    "011-christmas-tree.svg",
-    "015-ornament.svg",
-    "016-ornament-1.svg",
-    "017-gift-box.svg",
-    "024-snowflake.svg",
-    "027-star-1.svg"
+var CHRISTMAS_ICONS = [
+    "christmas/001-angel.svg",
+    "christmas/004-candle.svg",
+    "christmas/008-christmas.svg",
+    "christmas/010-star.svg",
+    "christmas/011-christmas-tree.svg",
+    "christmas/015-ornament.svg",
+    "christmas/016-ornament-1.svg",
+    "christmas/017-gift-box.svg",
+    "christmas/024-snowflake.svg",
+    "christmas/027-star-1.svg"
+];
+var BIRTHDAY_ICONS = [
+    "birthday/050-balloons.svg",
+    "birthday/049-cake.svg",
+    "birthday/046-wine.svg",
+    "birthday/043-confetti.svg",
+    "birthday/036-gift.svg",
+    "birthday/029-invitation.svg",
+    "birthday/019-party-horn.svg",
+    "birthday/010-party-hat.svg",
+    "birthday/001-bucket.svg",
+    "birthday/005-drink-1.svg",
 ];
 var ICON_COUNT = 4;
 var SLOT_COUNT = CHARS.length + ICON_COUNT;
@@ -32,7 +44,7 @@ function shuffle(o) {
     return o;
 }
 
-function animate(el, start, end) {
+function animate(el, start, end, callback) {
     el.css({
         top: topOffset(start)
     });
@@ -63,8 +75,9 @@ function animate(el, start, end) {
             break_time = 2 * d / v;
             break_acceleration = 2 * d / break_time / break_time;
             v -= break_acceleration;
-            if (v < 0) {
+            if (v < 0 || isNaN(v)) {
                 window.clearInterval(interval);
+                callback();
             }
             if (x - v < 0) {
                 overturn--;
@@ -97,6 +110,8 @@ function buildRow(el, target, length) {
         "color4"
     ];
 
+    var active_count = 0;
+
     for (var i = 0; i < length; i++) {
         var slot = $("<div class='slot'>");
         el.append(slot);
@@ -104,7 +119,8 @@ function buildRow(el, target, length) {
         slot.append(band);
 
         var color_cache = {};
-        var slots = shuffle(CHARS.concat(shuffle(ICONS).slice(0, ICON_COUNT)));
+        var icons = theme === 'birthday' ? BIRTHDAY_ICONS : CHRISTMAS_ICONS;
+        var slots = shuffle(CHARS.concat(shuffle(icons).slice(0, ICON_COUNT)));
         for (var j = -OVERLAP; j < SLOT_COUNT + OVERLAP; j++) {
             var cell = $("<span>");
             var char = slots[(j + SLOT_COUNT) % SLOT_COUNT];
@@ -133,7 +149,12 @@ function buildRow(el, target, length) {
             }
             band.append(cell);
         }
-        animate(band, slots.indexOf(" "), slots.indexOf(target.charAt(i)));
+        active_count++;
+        animate(band, slots.indexOf(" "), slots.indexOf(target.charAt(i)), function() {
+            if (--active_count <= 0) {
+                $("#text-below").animate({opacity: 1}, 1500);
+            }
+        });
     }
 }
 
