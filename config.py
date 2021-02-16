@@ -4,7 +4,7 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI",
                                          "sqlite:////tmp/test.db")
 
-MAIL_SERVER = "smtp.gmail.com"
+MAIL_SERVER = os.environ.get("MAIL_SERVER", "smtp.gmail.com")
 MAIL_PORT = 587
 MAIL_USE_TLS = True
 MAIL_USERNAME = os.environ.get("MAIL_USERNAME", "noreply@example.com")
