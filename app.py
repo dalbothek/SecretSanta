@@ -43,6 +43,33 @@ def draw(config_file):
     config = secretsanta.read_config(config_file)
     partners = secretsanta.draw_partners(config)
 
+    _save_and_notify(config, partners, write_config=config_file)
+
+
+@app.cli.command()
+@click.argument("config_file", type=click.File("rb"), default=sys.stdin)
+@click.argument("draw", required=False)
+def resend(config_file, draw):
+    config = secretsanta.read_config(config_file)
+
+    if not draw:
+        if not config.history:
+            print("Configuration contains no previous draws.")
+            return
+
+        draw = max(config.history.keys())
+
+    if draw not in config.history:
+        print(f"Configuration does not contain draw {draw}.")
+        return
+
+    print(f"Loading draw {draw}")
+
+    partners = config.history[draw]
+    _save_and_notify(config, partners)
+
+
+def _save_and_notify(config, partners, write_config=None):
     secrets = [
         (
             giver,
@@ -95,8 +122,9 @@ def draw(config_file):
 
     model.db.session.commit()
 
-    config.append_to_history(partners)
-    config.save_with_timestamp(config_file.name)
+    if write_config:
+        config.append_to_history(partners)
+        config.save_with_timestamp(write_config.name)
 
     for msg in messages:
         mail.send(msg)
@@ -134,6 +162,8 @@ def create_mail(giver, secret, config):
     msg = flask_mail.Message()
     msg.subject = render_string(config.get('subject'), giver)
     msg.body = render_string(config.get('message'), giver, url=url)
+    if 'html' in config:
+        msg.html = render_string(config.get('html'), giver, url=url)
     msg.recipients = [render_string(config.get('receiver'), giver)]
 
     sender_name = render_string(config.get('sender'), giver)
