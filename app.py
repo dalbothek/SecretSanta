@@ -60,10 +60,10 @@ def resend(config_file, draw):
         draw = max(config.history.keys())
 
     if draw not in config.history:
-        print(f"Configuration does not contain draw {draw}.")
+        print("Configuration does not contain draw %s." % draw)
         return
 
-    print(f"Loading draw {draw}")
+    print("Loading draw %s" % draw)
 
     partners = config.history[draw]
     _save_and_notify(config, partners)
